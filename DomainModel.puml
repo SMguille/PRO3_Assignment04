@@ -11,7 +11,6 @@ class Animal {
 class Part {
     partId
     weight
-    animalOfOrigin
     type
 }
 
@@ -22,6 +21,7 @@ class Tray {
 }
 
 class Product {
+    id
     productName
 }
 
