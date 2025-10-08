@@ -1,0 +1,19 @@
+@startuml SlaughterhouseDomainModel
+!include astah-min.puml
+scale 0.3
+
+archimate #Technology "Server 1" as server1 <<technology-device>>
+archimate #Technology "Server 2" as server2 <<technology-device>>
+archimate #Technology "Server 3" as server3 <<technology-device>>
+
+archimate "Station 1 Client" as client1 <<$archimate/business-object>> #Business
+archimate "Station 2 Client" as client2 <<$archimate/business-object>> #Business
+archimate "Station 3 Client" as client3 <<$archimate/business-object>> #Business
+
+client1 -down- server1 : Direct
+client2 -down- server2 : Direct
+client3 -down- server3 : Direct
+
+
+
+@enduml
