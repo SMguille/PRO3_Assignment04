@@ -54,10 +54,13 @@ public class DBRetrievalService extends TraceServiceGrpc.TraceServiceImplBase
       try (ResultSet rs = ps.executeQuery()) {
         while (rs.next()) ids.add(rs.getInt(1));
       }
+      catch (SQLException e) {
+        System.out.println("SQL exception: " + e.getMessage());
+        responseObserver.onError(e);
+      }
 
-      GetAnimalsByProductResponse.Builder out = GetAnimalsByProductResponse.newBuilder();
       for (var id : ids) {
-        out.addAnimals(AnimalRef.newBuilder().setId(id).build());
+        responseBuilder.addAnimals(AnimalRef.newBuilder().setId(id).build());
       }
       // Build
       var responseText = responseBuilder.build();
@@ -88,10 +91,13 @@ public class DBRetrievalService extends TraceServiceGrpc.TraceServiceImplBase
       try (ResultSet rs = ps.executeQuery()) {
         while (rs.next()) ids.add(rs.getInt(1));
       }
+      catch (SQLException e) {
+        System.out.println("SQL exception: " + e.getMessage());
+        responseObserver.onError(e);
+      }
 
-      GetProductsByAnimalResponse.Builder out = GetProductsByAnimalResponse.newBuilder();
       for (var id : ids) {
-        out.addProducts(ProductRef.newBuilder().setId(id).build());
+        responseBuilder.addProducts(ProductRef.newBuilder().setId(id).build());
       }
       // Build
       var responseText = responseBuilder.build();

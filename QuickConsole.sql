@@ -38,3 +38,40 @@ SELECT inet_server_addr() AS host, inet_server_port() AS port;
 SELECT table_schema, table_name
 FROM information_schema.tables
 WHERE table_schema='pro3_assignment';
+
+
+-- prove we see the schema
+SELECT current_database(), current_schemas(true);
+
+-- counts
+SELECT 'animal' tbl, COUNT(*) FROM pro3_assignment.animal
+UNION ALL SELECT 'part', COUNT(*) FROM pro3_assignment.part
+UNION ALL SELECT 'tray', COUNT(*) FROM pro3_assignment.tray
+UNION ALL SELECT 'product', COUNT(*) FROM pro3_assignment.product
+UNION ALL SELECT 'product_tray', COUNT(*) FROM pro3_assignment.product_tray;
+
+-- show links for product 1
+SELECT * FROM pro3_assignment.product_tray WHERE product_id = 1;  -- expect tray_id in (1,2)
+
+-- parts per tray
+SELECT tray_id, animal_id, COUNT(*) parts
+FROM pro3_assignment.part
+GROUP BY tray_id, animal_id
+ORDER BY tray_id, animal_id;
+
+-- final join (animals by product 1)
+SELECT DISTINCT p.animal_id
+FROM pro3_assignment.part p
+         JOIN pro3_assignment.tray t  ON p.tray_id = t.id
+         JOIN pro3_assignment.product_tray pt ON pt.tray_id = t.id
+WHERE pt.product_id = 1
+ORDER BY 1;
+
+-- final join (products by animal 2)
+SELECT DISTINCT pt.product_id
+FROM pro3_assignment.product_tray pt
+         JOIN pro3_assignment.tray t ON pt.tray_id = t.id
+         JOIN pro3_assignment.part p ON p.tray_id = t.id
+WHERE p.animal_id = 2
+ORDER BY 1;
+
