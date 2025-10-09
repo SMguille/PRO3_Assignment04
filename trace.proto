@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "via.pro3.retrieval.generated";
+
+message AnimalRef { int32 id = 1; }
+message ProductRef { int32 id = 1; }
+
+message GetAnimalsByProductRequest { int32 productId = 1; }
+message GetAnimalsByProductResponse { repeated AnimalRef animals = 1; }
+
+message GetProductsByAnimalRequest { int32 animalId = 1; }
+message GetProductsByAnimalResponse { repeated ProductRef products = 1; }
+
+service TraceService
+{
+  rpc GetAnimalsByProduct(GetAnimalsByProductRequest) returns (GetAnimalsByProductResponse);
+  rpc GetProductsByAnimal(GetProductsByAnimalRequest) returns (GetProductsByAnimalResponse);
+}
