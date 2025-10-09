@@ -1,0 +1,28 @@
+package via.pro3.retrieval;
+
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
+import via.pro3.retrieval.service.RetrievalService;
+
+public class ServerMain
+{
+  public static void main(String[] args)
+  {
+    try
+    {
+      // Make server
+      Server server = ServerBuilder
+          .forPort(8089)
+          .addService(new RetrievalService())
+          .build();
+      // Start server
+      server.start();
+      System.out.println("Server started, listening on " + server.getPort());
+      server.awaitTermination();
+    }
+    catch (Exception e)
+    {
+      System.out.println(e.getMessage());
+    }
+  }
+}
