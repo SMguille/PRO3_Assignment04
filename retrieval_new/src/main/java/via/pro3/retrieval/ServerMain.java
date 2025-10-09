@@ -2,6 +2,7 @@ package via.pro3.retrieval;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import via.pro3.retrieval.service.DBRetrievalService;
 import via.pro3.retrieval.service.RetrievalService;
 
 public class ServerMain
@@ -13,7 +14,7 @@ public class ServerMain
       // Make server
       Server server = ServerBuilder
           .forPort(8089)
-          .addService(new RetrievalService())
+          .addService(new DBRetrievalService())
           .build();
       // Start server
       server.start();
