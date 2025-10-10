@@ -3,9 +3,19 @@ package via.pro3.retrieval.service;
 import io.grpc.stub.StreamObserver;
 import via.pro3.retrieval.generated.*;
 
+import java.sql.SQLException;
+import java.util.List;
+
 public class RetrievalService extends TraceServiceGrpc.TraceServiceImplBase
 {
-  private int[] dummy = new int[]{1,2,3};
+
+  private DataSource source;
+
+  public RetrievalService(DataSource source)
+  {
+    this.source = source;
+  }
+
   @Override public void getAnimalsByProduct(GetAnimalsByProductRequest request,
       StreamObserver<GetAnimalsByProductResponse> responseObserver)
   {
@@ -13,8 +23,19 @@ public class RetrievalService extends TraceServiceGrpc.TraceServiceImplBase
     // Make builder
     var responseBuilder = GetAnimalsByProductResponse.newBuilder();
     // Populate
-    for(var i : dummy)
-      responseBuilder.addAnimals(AnimalRef.newBuilder().setId(i).build());
+    List<Integer> ids = null;
+    try
+    {
+      ids = source.getAnimalsByProduct(request.getProductId());
+    }
+    catch (SQLException e)
+    {
+      System.out.println("Error:"+e.getMessage());
+      responseObserver.onError(e);
+    }
+    for (var id : ids) {
+      responseBuilder.addAnimals(AnimalRef.newBuilder().setId(id).build());
+    }
     // Build
     var responseText = responseBuilder.build();
     responseObserver.onNext(responseText);
@@ -28,8 +49,19 @@ public class RetrievalService extends TraceServiceGrpc.TraceServiceImplBase
     // Make builder
     var responseBuilder = GetProductsByAnimalResponse.newBuilder();
     // Populate
-    for(var i : dummy)
-      responseBuilder.addProducts(ProductRef.newBuilder().setId(i).build());
+    List<Integer> ids = null;
+    try
+    {
+      ids = source.getProductsByAnimal(request.getAnimalId());
+    }
+    catch (SQLException e)
+    {
+      System.out.println("Error:"+e.getMessage());
+      responseObserver.onError(e);
+    }
+    for (var id : ids) {
+      responseBuilder.addProducts(ProductRef.newBuilder().setId(id).build());
+    }
     // Build
     var responseText = responseBuilder.build();
     responseObserver.onNext(responseText);
