@@ -32,6 +32,7 @@ public class RetrievalService extends TraceServiceGrpc.TraceServiceImplBase
     {
       System.out.println("Error:"+e.getMessage());
       responseObserver.onError(e);
+      return;
     }
     for (var id : ids) {
       responseBuilder.addAnimals(AnimalRef.newBuilder().setId(id).build());
@@ -58,6 +59,7 @@ public class RetrievalService extends TraceServiceGrpc.TraceServiceImplBase
     {
       System.out.println("Error:"+e.getMessage());
       responseObserver.onError(e);
+      return;
     }
     for (var id : ids) {
       responseBuilder.addProducts(ProductRef.newBuilder().setId(id).build());
