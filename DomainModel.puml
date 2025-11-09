@@ -6,6 +6,13 @@ class Animal {
     animalId
     arrivalAt
     liveWeight
+    origin
+}
+
+class PlaceOfOrigin
+{
+    id
+    name
 }
 
 class Part {

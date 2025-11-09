@@ -7,11 +7,18 @@ CREATE DOMAIN weight AS NUMERIC(10, 3) CHECK (VALUE > 0);
 
 -- multiplicity direction: animal<-part->tray<->product<-HalfAnimal|Package
 
+CREATE TABLE place_of_origin
+(
+    id   SERIAL PRIMARY KEY,
+    name VARCHAR(64) NOT NULL
+);
+
 CREATE TABLE animal
 (
     id             SERIAL PRIMARY KEY,
     arrival_at     TIMESTAMP WITH TIME ZONE,
-    live_weight_kg weight
+    live_weight_kg weight,
+    origin_id      INT REFERENCES place_of_origin (id) ON DELETE SET NULL
 );
 
 CREATE TABLE part_type
@@ -55,10 +62,15 @@ VALUES ('leg');
 INSERT INTO part_type(name)
 VALUES ('arm');
 
+-- places of origin
+INSERT INTO place_of_origin(name)
+VALUES ('Farm A'),
+       ('Farm B');
+
 -- animals
-INSERT INTO animal(arrival_at, live_weight_kg)
-VALUES ('2025-10-01 08:30:00+02', 450.750),
-       ('2025-10-02 09:15:00+02', 520.320);
+INSERT INTO animal(arrival_at, live_weight_kg, origin_id)
+VALUES ('2025-10-01 08:30:00+02', 450.750, 1),
+       ('2025-10-02 09:15:00+02', 520.320, 2);
 
 -- trays
 INSERT INTO tray(max_weight_capacity_kg, parts_type)
