@@ -46,5 +46,6 @@ Product "*" -- "1..*" Tray : comes from ▶
 Part "*" -- "1" Animal : comes from ▶
 Package --|> Product
 HalfAnimal --|> Product
+Animal "*" -- "1" PlaceOfOrigin : comes from ▶
 
 @enduml
