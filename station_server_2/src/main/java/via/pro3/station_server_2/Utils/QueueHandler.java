@@ -12,6 +12,8 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.rabbitmq.client.AMQP;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -104,7 +106,14 @@ import java.util.concurrent.TimeoutException;
   {
     channel.queueDeclare(queueName, false, false, false, null);
     String message = objToString(obj);
-    channel.basicPublish("", queueName, null, message.getBytes());
+
+    AMQP.BasicProperties props = new AMQP.BasicProperties.Builder().contentType(
+            "application/json")
+        .deliveryMode(2)
+        .priority(0)
+        .build();
+
+    channel.basicPublish("", queueName, props, message.getBytes());
     System.out.println(" [Queue: " + queueName + "] Sent '" + message + "'");
   }
 
