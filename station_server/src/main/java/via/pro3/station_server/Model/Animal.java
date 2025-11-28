@@ -34,4 +34,10 @@ public class Animal
   public LocalDate getArrivalAt() { return arrivalAt; }
   public Float getLiveWeight() { return liveWeight; }
   public Integer getOrigin() { return origin; }
+
+  @Override public String toString()
+  {
+    return "Animal{" + "id=" + id + ", arrivalAt=" + arrivalAt + ", liveWeight="
+        + liveWeight + ", origin=" + origin + '}';
+  }
 }
