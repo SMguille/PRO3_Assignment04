@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "animal", schema = "pro3_assignment")
+@Table(name = "animal", schema = "pro3_assignment_station1")
 public class Animal
 {
   @Id // Designates this field as the primary key
