@@ -19,10 +19,13 @@ import java.util.concurrent.TimeoutException;
   private final static String QUEUE_NAME = "register_animal";
   private final static String HOST = "localhost";
   private final AnimalRepository animalRepository;
+  private final QueueHandler queueHandler;
 
-  public RegistrationController(AnimalRepository animalRepository)
+  public RegistrationController(AnimalRepository animalRepository,
+      QueueHandler queueHandler)
   {
     this.animalRepository = animalRepository;
+    this.queueHandler = queueHandler;
   }
 
   @PostMapping("/animals") public Animal addAnimal(@RequestBody Animal animal)
@@ -30,7 +33,7 @@ import java.util.concurrent.TimeoutException;
     try
     {
       Animal addedAnimal = animalRepository.save(animal);
-      QueueHandler.addToQueue(HOST, QUEUE_NAME, animal);
+      queueHandler.addToQueue(QUEUE_NAME, animal);
       return addedAnimal;
     }
     catch (IOException e)
@@ -40,6 +43,10 @@ import java.util.concurrent.TimeoutException;
     catch (TimeoutException e)
     {
       throw new RuntimeException(e);
+    }
+    catch (Exception e)
+    {
+      throw new RuntimeException(e); // If reliance on RabbitMQ is not critical (independence more important), then the error could be suppressed
     }
   }
 }

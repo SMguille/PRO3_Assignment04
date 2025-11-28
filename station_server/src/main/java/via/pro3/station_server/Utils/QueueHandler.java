@@ -1,37 +1,116 @@
 package via.pro3.station_server.Utils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import via.pro3.station_server.Model.Animal;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeoutException;
 
-public class QueueHandler
+@Component public class QueueHandler
 {
-  private static final Gson gson = new Gson();
-
-  public static void addToQueue(String host, String queueName, Object obj) throws IOException, TimeoutException
+  private final TypeAdapter<LocalDate> LOCAL_DATE_ADAPTER = new TypeAdapter<>()
   {
-    ConnectionFactory factory = new ConnectionFactory();
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
+
+    @Override public void write(JsonWriter out, LocalDate value)
+        throws IOException
+    {
+      if (value == null)
+      {
+        out.nullValue();
+      }
+      else
+      {
+        out.value(value.format(FORMATTER));
+      }
+    }
+
+    @Override public LocalDate read(JsonReader in) throws IOException
+    {
+      if (in.peek() == com.google.gson.stream.JsonToken.NULL)
+      {
+        in.nextNull();
+        return null;
+      }
+      return LocalDate.parse(in.nextString(), FORMATTER);
+    }
+  };
+  private final Gson gson;
+  private ConnectionFactory factory;
+  private Connection connection;
+  private Channel channel;
+  private boolean connectionEstablished = false;
+  @Value("${rabbitmq.host}") private String host;
+  @Value("${rabbitmq.port}") private int port;
+  private Queue<String> queue = new ConcurrentLinkedQueue<>();
+
+  public QueueHandler()
+  {
+    gson = new GsonBuilder().registerTypeAdapter(LocalDate.class,
+        LOCAL_DATE_ADAPTER).create();
+  }
+
+  @PostConstruct private void init()
+  {
+    factory = new ConnectionFactory();
     factory.setHost(host);
-    try (Connection connection = factory.newConnection();
-        Channel channel = connection.createChannel())
+    factory.setPort(port);
+    tryEstablishConnection();
+  }
+
+  private void tryEstablishConnection()
+  {
+    try
     {
-      channel.queueDeclare(queueName, false, false, false, null);
-      String message = obj.toString();
-      channel.basicPublish("", queueName, null, message.getBytes());
-      System.out.println(" [x] Sent '" + message + "'");
+      connection = factory.newConnection();
+      channel = connection.createChannel();
+      connectionEstablished = true;
     }
-    catch (IOException e)
+    catch (Exception e)
     {
-      throw new RuntimeException(e);
+      System.out.println(
+          "Could not establish a connection to the RabbitMQ server. ");
     }
-    catch (TimeoutException e)
+  }
+
+  public void addToQueue(String queueName, Object obj)
+      throws IOException, TimeoutException
+  {
+    if (!connectionEstablished)
     {
-      throw new RuntimeException(e);
+      tryEstablishConnection();
     }
+    if (!connectionEstablished)
+    {
+      throw new RuntimeException("Connection not established.");
+    }
+    addToRemoteQueue(queueName, obj);
+  }
+
+  private void addToRemoteQueue(String queueName, Object obj) throws IOException
+  {
+    channel.queueDeclare(queueName, false, false, false, null);
+    String message = objToString(obj);
+    channel.basicPublish("", queueName, null, message.getBytes());
+    System.out.println(" [Queue: " + queueName + "] Sent '" + message + "'");
+  }
+
+  private String objToString(Object obj)
+  {
+    return gson.toJson(obj);
   }
 }
