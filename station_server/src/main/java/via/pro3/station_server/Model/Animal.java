@@ -1,7 +1,8 @@
 package via.pro3.station_server.Model;
 
 import jakarta.persistence.*;
-import java.time.OffsetDateTime;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "animal", schema = "pro3_assignment")
@@ -12,7 +13,7 @@ public class Animal
   private Integer id;
 
   @Column(name = "arrival_at", nullable = false)
-  private OffsetDateTime arrivalAt;
+  private LocalDate arrivalAt;
 
   @Column(name = "live_weight_kg", nullable = false)
   private Float liveWeight;
@@ -22,7 +23,7 @@ public class Animal
 
   protected Animal() {}
 
-  public Animal(OffsetDateTime arrivalAt, Float liveWeight, Integer origin)
+  public Animal(LocalDate arrivalAt, Float liveWeight, Integer origin)
   {
     this.arrivalAt = arrivalAt;
     this.liveWeight = liveWeight;
@@ -30,7 +31,7 @@ public class Animal
   }
 
   public Integer getId() { return id; }
-  public OffsetDateTime getArrivalAt() { return arrivalAt; }
+  public LocalDate getArrivalAt() { return arrivalAt; }
   public Float getLiveWeight() { return liveWeight; }
   public Integer getOrigin() { return origin; }
 }
