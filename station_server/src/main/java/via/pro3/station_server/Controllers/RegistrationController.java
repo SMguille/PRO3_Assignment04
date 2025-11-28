@@ -8,6 +8,7 @@ import via.pro3.station_server.Model.AnimalRepository;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
+import via.pro3.station_server.Utils.QueueHandler;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import java.util.concurrent.TimeoutException;
 @RestController public class RegistrationController
 {
   private final static String QUEUE_NAME = "register_animal";
+  private final static String HOST = "localhost";
   private final AnimalRepository animalRepository;
 
   public RegistrationController(AnimalRepository animalRepository)
@@ -25,22 +27,11 @@ import java.util.concurrent.TimeoutException;
 
   @PostMapping("/animals") public Animal addAnimal(@RequestBody Animal animal)
   {
-    Animal addedAnimal = animalRepository.save(animal);
-    addToQueue(addedAnimal);
-    return addedAnimal;
-  }
-
-  private void addToQueue(Animal animal)
-  {
-    ConnectionFactory factory = new ConnectionFactory();
-    factory.setHost("localhost");
-    try (Connection connection = factory.newConnection();
-        Channel channel = connection.createChannel())
+    try
     {
-      channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-      String message = animal.toString();
-      channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
-      System.out.println(" [x] Sent '" + message + "'");
+      Animal addedAnimal = animalRepository.save(animal);
+      QueueHandler.addToQueue(HOST, QUEUE_NAME, animal);
+      return addedAnimal;
     }
     catch (IOException e)
     {
