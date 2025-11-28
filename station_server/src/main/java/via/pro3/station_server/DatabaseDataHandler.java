@@ -1,5 +1,6 @@
 package via.pro3.station_server;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import via.pro3.station_server.Model.Animal;
 
@@ -10,12 +11,12 @@ import java.util.List;
 
 @Component public class DatabaseDataHandler implements DataHandler
 {
-  private static final String URL = System.getenv()
-      .getOrDefault("DB_URL", "jdbc:postgresql://localhost:5432/postgres");
-  private static final String USER = System.getenv()
-      .getOrDefault("DB_USER", "postgres");
-  private static final String PASS = System.getenv()
-      .getOrDefault("DB_PASS", "password");
+  @Value("${db.url}")
+  private String URL;
+  @Value("${db.usr}")
+  private String USER;
+  @Value("${db.pwd}")
+  private String PASS;
 
   private Connection getConnection() throws SQLException
   {
