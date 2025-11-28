@@ -52,7 +52,7 @@ import java.util.List;
     var result = new ArrayList<Animal>();
     for (var a : getAllAnimals())
     {
-      if (id != null && a.getAnimalId() != id)
+      if (id != null && a.getId() != id)
         continue;
       if (origin != null && a.getOrigin() != origin)
         continue;
