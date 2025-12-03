@@ -1,6 +1,6 @@
 @startuml SlaughterhouseDomainModel
 !include astah-min.puml
-scale 0.3
+scale 3
 
 class Animal {
     animalId
