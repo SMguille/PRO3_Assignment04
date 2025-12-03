@@ -12,8 +12,6 @@ import java.util.Set;
 
     @Column(name = "name") String productName;
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "product_type", referencedColumnName = "id") private ProductType productType;
-
     @OneToMany(mappedBy = "part", cascade = CascadeType.ALL, orphanRemoval = true) private transient Set<Part> parts;
 
     @ManyToMany(mappedBy = "tray", cascade = CascadeType.ALL) private transient Set<Tray> trays;
