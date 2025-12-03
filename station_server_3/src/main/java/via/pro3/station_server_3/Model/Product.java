@@ -45,4 +45,8 @@ import java.util.Set;
     {
         this.parts = parts;
     }
+
+    public Set<Tray> getTrays() {return trays;}
+
+    public void setTrays(Set<Tray> trays){this.trays = trays;}
 }
