@@ -1,0 +1,151 @@
+{
+	"info": {
+		"_postman_id": "387e775b-0321-48b3-ae33-02ff2f199403",
+		"name": "PRO3_station1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49386727",
+		"_collection_link": "https://edko-fek-9997148.postman.co/workspace/Eduard-Fekete's-Workspace~c27871cb-c3f6-4010-87bc-b0b66594d715/collection/49386727-387e775b-0321-48b3-ae33-02ff2f199403?action=share&source=collection_link&creator=49386727"
+	},
+	"item": [
+		{
+			"name": "GetAnimals",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/animals",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"animals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAnimals Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/animals/1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"animals",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAnimals Id Param",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/animals?id=2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"animals"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAnimals Origin",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/animals?origin=1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"animals"
+					],
+					"query": [
+						{
+							"key": "origin",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAnimals Arrival",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/animals?arrivalAt=2025-10-01",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"animals"
+					],
+					"query": [
+						{
+							"key": "arrivalAt",
+							"value": "2025-10-01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Animal",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"animalId\": 0,\r\n  \"arrivalAt\": \"2025-10-10\",\r\n  \"liveWeight\": 117.4,\r\n  \"origin\": 1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/animals",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"animals"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

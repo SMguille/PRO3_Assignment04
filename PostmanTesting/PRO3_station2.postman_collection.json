@@ -1,0 +1,96 @@
+{
+	"info": {
+		"_postman_id": "c01f9817-59bd-4fba-90ef-114b0a829e43",
+		"name": "PRO3_station2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49386727",
+		"_collection_link": "https://edko-fek-9997148.postman.co/workspace/Eduard-Fekete's-Workspace~c27871cb-c3f6-4010-87bc-b0b66594d715/collection/49386727-c01f9817-59bd-4fba-90ef-114b0a829e43?action=share&source=collection_link&creator=49386727"
+	},
+	"item": [
+		{
+			"name": "POST PartType",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"head\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/parttypes",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"parttypes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Part",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"weight_kg\": 10,\r\n  \"parts_type\": 1,\r\n  \"animal_id\":500,\r\n  \"tray_id\": 1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/parts",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"parts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Tray",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"maxWeightCapacityKg\": 100,\r\n  \"partsTypeId\":1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/trays",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"trays"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
