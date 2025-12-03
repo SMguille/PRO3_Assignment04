@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
 
-@Entity @Table(name = "product") public class Product
+@Entity
+@Table(name = "product")
+@Inheritance(strategy = InheritanceType.JOINED) // Added Inheritance strategy
+public class Product
 {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Integer id;
