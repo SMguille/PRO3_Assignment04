@@ -2,19 +2,29 @@ package via.pro3.station_server_3.Model;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
-@Entity @Table(name = "product") public class Product
+@Entity
+@Table(name = "product")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Product
 {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column(name = "name") String productName;
+    @Column(name = "product_name")
+    private String productName;
 
-    @OneToMany(mappedBy = "part", cascade = CascadeType.ALL, orphanRemoval = true) private transient Set<Part> parts;
-
-    @ManyToMany(mappedBy = "tray", cascade = CascadeType.ALL) private transient Set<Tray> trays;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "product_tray",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "tray_id")
+    )
+    private Set<Tray> trays = new HashSet<>();
 
     public Integer getId()
     {
@@ -36,17 +46,13 @@ import java.util.Set;
         this.productName = productName;
     }
 
-    public Set<Part> getParts()
+    public Set<Tray> getTrays()
     {
-        return parts;
+        return trays;
     }
 
-    public void setParts(Set<Part> parts)
+    public void setTrays(Set<Tray> trays)
     {
-        this.parts = parts;
+        this.trays = trays;
     }
-
-    public Set<Tray> getTrays() {return trays;}
-
-    public void setTrays(Set<Tray> trays){this.trays = trays;}
 }
