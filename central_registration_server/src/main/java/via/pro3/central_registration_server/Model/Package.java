@@ -1,4 +1,4 @@
-package via.pro3.station_server_3.Model;
+package via.pro3.central_registration_server.Model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

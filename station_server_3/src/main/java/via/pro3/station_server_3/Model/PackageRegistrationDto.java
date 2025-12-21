@@ -1,12 +1,26 @@
 package via.pro3.station_server_3.Model;
 
-import java.util.List;
+import java.util.Set;
 
 public class PackageRegistrationDto {
+
     private String productName;
+    private Set<Integer> trayIds;
     private Integer partTypeId;
     private Integer amount;
-    private List<Integer> trayIds; // The trays these parts are taken from
+
+    // Constructors
+    public PackageRegistrationDto() {
+    }
+
+    public PackageRegistrationDto(String productName, Set<Integer> trayIds, Integer partTypeId, Integer amount) {
+        this.productName = productName;
+        this.trayIds = trayIds;
+        this.partTypeId = partTypeId;
+        this.amount = amount;
+    }
+
+    // Getters and Setters
 
     public String getProductName() {
         return productName;
@@ -14,6 +28,14 @@ public class PackageRegistrationDto {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public Set<Integer> getTrayIds() {
+        return trayIds;
+    }
+
+    public void setTrayIds(Set<Integer> trayIds) {
+        this.trayIds = trayIds;
     }
 
     public Integer getPartTypeId() {
@@ -30,13 +52,5 @@ public class PackageRegistrationDto {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
-    }
-
-    public List<Integer> getTrayIds() {
-        return trayIds;
-    }
-
-    public void setTrayIds(List<Integer> trayIds) {
-        this.trayIds = trayIds;
     }
 }

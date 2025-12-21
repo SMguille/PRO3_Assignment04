@@ -1,4 +1,4 @@
-package via.pro3.station_server_3.Model;
+package via.pro3.central_registration_server.Model;
 
 import jakarta.persistence.*;
 import java.util.HashSet;
@@ -10,7 +10,6 @@ import java.util.Set;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "product_name")
