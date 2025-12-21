@@ -7,3 +7,5 @@ SET SCHEMA 'pro3_assignment_station';
 -- Station 2
 
 -- Station 3
+
+CREATE DATABASE station3_db;
