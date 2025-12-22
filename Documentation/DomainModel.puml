@@ -18,7 +18,12 @@ class PlaceOfOrigin
 class Part {
     partId
     weight
-    type
+}
+
+class PartType
+{
+    id
+    name
 }
 
 class Tray {
@@ -47,5 +52,6 @@ Part "*" -- "1" Animal : comes from ▶
 Package --|> Product
 HalfAnimal --|> Product
 Animal "*" -- "1" PlaceOfOrigin : comes from ▶
+Part "*" -- "1" PartType : is of type ▶
 
 @enduml
