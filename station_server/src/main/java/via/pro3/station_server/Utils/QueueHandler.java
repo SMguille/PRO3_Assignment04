@@ -1,24 +1,24 @@
 package via.pro3.station_server.Utils;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeoutException;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import via.pro3.station_server.Model.Animal;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.TimeoutException;
+import jakarta.annotation.PostConstruct;
 
 @Component public class QueueHandler
 {
@@ -56,12 +56,13 @@ import java.util.concurrent.TimeoutException;
   private boolean connectionEstablished = false;
   @Value("${rabbitmq.host}") private String host;
   @Value("${rabbitmq.port}") private int port;
-  private Queue<String> queue = new ConcurrentLinkedQueue<>();
 
   public QueueHandler()
   {
-    gson = new GsonBuilder().registerTypeAdapter(LocalDate.class,
-        LOCAL_DATE_ADAPTER).create();
+    gson = new GsonBuilder()
+        .registerTypeAdapter(LocalDate.class, LOCAL_DATE_ADAPTER)
+        .registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY)
+        .create();
   }
 
   @PostConstruct private void init()
@@ -103,9 +104,16 @@ import java.util.concurrent.TimeoutException;
 
   private void addToRemoteQueue(String queueName, Object obj) throws IOException
   {
-    channel.queueDeclare(queueName, false, false, false, null);
+    channel.queueDeclare(queueName, true, false, false, null);
     String message = objToString(obj);
-    channel.basicPublish("", queueName, null, message.getBytes());
+
+    AMQP.BasicProperties props = new AMQP.BasicProperties.Builder()
+        .contentType("application/json")
+        .deliveryMode(2)
+        .priority(0)
+        .build();
+
+    channel.basicPublish("", queueName, props, message.getBytes());
     System.out.println(" [Queue: " + queueName + "] Sent '" + message + "'");
   }
 

@@ -1,5 +1,13 @@
 package via.pro3.station_server_3.Utils;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeoutException;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -9,16 +17,8 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.TimeoutException;
+import jakarta.annotation.PostConstruct;
 
 @Component
 public class QueueHandler {
@@ -55,8 +55,6 @@ public class QueueHandler {
 
     @Value("${rabbitmq.port}")
     private int port;
-
-    private Queue<String> queue = new ConcurrentLinkedQueue<>();
 
     public QueueHandler() {
         // We register the HibernateProxyTypeAdapter.FACTORY so Gson can handle JPA entities
@@ -95,7 +93,7 @@ public class QueueHandler {
     }
 
     private void addToRemoteQueue(String queueName, Object obj) throws IOException {
-        channel.queueDeclare(queueName, false, false, false, null);
+        channel.queueDeclare(queueName, true, false, false, null);
         String message = objToString(obj);
 
         AMQP.BasicProperties props = new AMQP.BasicProperties.Builder()
