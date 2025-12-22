@@ -1,11 +1,14 @@
 package via.pro3.central_registration_server.Model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity @Table(name = "part_type") public class PartType
 {
 
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Integer id;
+  @Id private Integer id;
 
   @Column(name = "name") String name;
 

@@ -21,4 +21,14 @@ public class RabbitConfig {
     public Queue registerTrayQueue() {
         return new Queue("register_tray", true);
     }
+
+    @Bean
+    public Queue registerAnimalQueue() {
+        return new Queue("register_animal", true);
+    }
+
+    @Bean
+    public Queue registerProductQueue() {
+        return new Queue("register_product", true);
+    }
 }

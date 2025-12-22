@@ -1,15 +1,17 @@
 package via.pro3.central_registration_server.Model;
 
-import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 @Entity
-@Table(name = "animal", schema = "pro3_assignment_station1")
+@Table(name = "animal")
 public class Animal
 {
   @Id // Designates this field as the primary key
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @Column(name = "arrival_at", nullable = false)
