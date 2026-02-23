@@ -5,7 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager; // Your copied JPA entities
+import jakarta.persistence.EntityManager; // JPA entities
 import jakarta.persistence.PersistenceContext;
 import via.pro3.central_registration_server.Model.Animal;
 import via.pro3.central_registration_server.Model.AnimalRepository;
